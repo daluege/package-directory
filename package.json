@@ -1,0 +1,21 @@
+{
+  "name": "package-directory",
+  "version": "0.1.3",
+  "description": "Specify a custom installation directory for local package.json dependencies",
+  "scripts": {
+    "install": "node install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daluege/package-directory.git"
+  },
+  "author": "Filip Dalüge <filip.daluge@checle.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daluege/package-directory/issues"
+  },
+  "homepage": "https://github.com/daluege/package-directory",
+  "dependencies": {
+    "findup-sync": "^1.0.0"
+  }
+}
