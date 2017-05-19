@@ -41,8 +41,11 @@ if (spawnSync('mv', [modulePath, directory], {stdio: 'inherit'}).status) {
   throw process.exit(1)
 }
 
+// Specify an absolute or relative symbolic link target depending on the original property
+let target = path.isAbsolute(pkg.directory) ? fs.realpathSync(directory) : path.relative(path.dirname(modulePath), directory)
+
 // Link module folder to custom directory
-if (spawnSync('ln', ['-s', path.relative(path.dirname(modulePath), directory), modulePath], {stdio: 'inherit'}).status) {
+if (spawnSync('ln', ['-s', target, modulePath], {stdio: 'inherit'}).status) {
   // Undo `mv` on error
   spawnSync('mv', [directory, modulePath])
 
