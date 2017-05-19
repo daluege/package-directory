@@ -15,22 +15,33 @@ if (!pkg.hasOwnProperty('directory')) {
 }
 
 let directory = path.resolve(dirname, pkg.directory)
-let moduleStat = fs.lstatSync(modulePath)
 
-if (moduleStat.isSymbolicLink()) {
-  // Symbolic link exists
-  throw process.exit(0)
+// Examine existing module folder
+try {
+  let moduleStat = fs.lstatSync(modulePath)
+
+  if (moduleStat.isSymbolicLink()) {
+    // Symbolic link exists
+    throw process.exit(0)
+  }
+
+  if (fs.realpathSync(modulePath) === fs.realpathSync(directory)) {
+    // Module already equals the target directory
+    throw process.exit(0)
+  }
+} catch (e) { }
+
+// Create missing intermediate pathname components
+if (spawnSync('mkdir', ['-p', path.dirname(directory)], {stdio: 'inherit'}).status) {
+  throw process.exit(1)
 }
 
-if (fs.realpathSync(modulePath) === fs.realpathSync(directory)) {
-  // Module already equals the target directory
-  throw process.exit(0)
-}
-
+// Move module folder to custom directory
 if (spawnSync('mv', [modulePath, directory], {stdio: 'inherit'}).status) {
   throw process.exit(1)
 }
 
+// Move link module folder to custom directory
 if (spawnSync('ln', ['-s', path.relative(dirname, directory), modulePath], {stdio: 'inherit'}).status) {
   // Undo `mv`
   spawnSync('mv', [directory, modulePath])
