@@ -6,7 +6,7 @@ Lets you configure the path where local dependencies are installed. In NPM, the 
 
 Install this package using NPM:
 
-    npm install package-directory --save
+    npm install package-directory --save-dev
 
 ## Configuration
 
@@ -17,6 +17,10 @@ Add a `"directory"` to your `package.json` configuration as follows:
     }
 
 Node modules will be placed in `dist/modules` relative to your package root.
+
+## Considerations
+
+As the package depends on symbolic links, consider prefering to install this package as a `devDependency`.
 
 ## License
 
