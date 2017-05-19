@@ -8,18 +8,18 @@ let modulePath = path.dirname(__dirname)
 let filename = findupSync('package.json', {cwd: modulePath})
 
 if (filename == null) {
-  process.stderr.write('package.json not found\n')
+  console.warn('package.json not found\n')
 
-  throw process.exit(1)
+  throw process.exit(0)
 }
 
 let dirname = path.dirname(filename)
 let config = require(filename)
 
 if (fs.realpathSync(modulePath).indexOf(fs.realpathSync(dirname) + path.sep) === -1) {
-  process.stderr.write('Module must be installed locally\n')
+  console.warn('Module must be installed in a local package context\n')
 
-  throw process.exit(1)
+  throw process.exit(0)
 }
 
 if (!config.hasOwnProperty('directory')) {

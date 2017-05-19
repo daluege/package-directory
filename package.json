@@ -1,6 +1,6 @@
 {
   "name": "package-directory",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Specify a custom installation directory for local package.json dependencies",
   "scripts": {
     "preinstall": "node install.js"
