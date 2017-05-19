@@ -1,6 +1,6 @@
 # package-directory
 
-Lets you configure the path where local dependencies are installed. In NPM, the default is `node_modules`. Behaves similar to the [`.bowerrc`](https://bower.io/docs/config/) `"directory"` property. Compatible to POSIX-compliant system environments.
+Lets you configure the path where local dependencies are installed. In NPM, the default is `node_modules`. Behaves similar to the [`.bowerrc`](https://bower.io/docs/config/) `"directory"` property. Compatible to POSIX-compliant systems.
 
 ## Installation
 

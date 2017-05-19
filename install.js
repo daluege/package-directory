@@ -7,14 +7,21 @@ const path = require('path')
 let modulePath = path.dirname(__dirname)
 let filename = findupSync('package.json', {cwd: modulePath})
 let dirname = path.dirname(filename)
-let pkg = require(filename)
+let config = require(filename)
 
-if (!pkg.hasOwnProperty('directory')) {
+if (!config.hasOwnProperty('directory')) {
   process.stderr.write('No directory property found in ' + filename + '\n')
+
   throw process.exit(1)
 }
 
-let directory = path.resolve(dirname, pkg.directory)
+if (fs.realpathSync(modulePath).indexOf(fs.realpathSync(dirname) + path.sep) === -1) {
+  process.stderr.write('Module must be installed locally\n')
+
+  throw process.exit(1)
+}
+
+let directory = path.resolve(dirname, config.directory)
 
 // Examine existing module folder
 try {
@@ -42,7 +49,7 @@ if (spawnSync('mv', [modulePath, directory], {stdio: 'inherit'}).status) {
 }
 
 // Specify an absolute or relative symbolic link target depending on the original property
-let target = path.isAbsolute(pkg.directory) ? fs.realpathSync(directory) : path.relative(path.dirname(modulePath), directory)
+let target = path.isAbsolute(config.directory) ? fs.realpathSync(directory) : path.relative(path.dirname(modulePath), directory)
 
 // Link module folder to custom directory
 if (spawnSync('ln', ['-s', target, modulePath], {stdio: 'inherit'}).status) {
