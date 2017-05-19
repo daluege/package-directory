@@ -10,9 +10,9 @@ let dirname = path.dirname(filename)
 let config = require(filename)
 
 if (!config.hasOwnProperty('directory')) {
-  process.stderr.write('No directory property found in ' + filename + '\n')
+  console.warn('No directory property found in ' + filename + '\n')
 
-  throw process.exit(1)
+  throw process.exit(0)
 }
 
 if (fs.realpathSync(modulePath).indexOf(fs.realpathSync(dirname) + path.sep) === -1) {
