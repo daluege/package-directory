@@ -20,13 +20,13 @@ let directory = path.resolve(dirname, pkg.directory)
 try {
   let moduleStat = fs.lstatSync(modulePath)
 
+  // Symbolic link exists
   if (moduleStat.isSymbolicLink()) {
-    // Symbolic link exists
     throw process.exit(0)
   }
 
+  // Module already equals the target directory
   if (fs.realpathSync(modulePath) === fs.realpathSync(directory)) {
-    // Module already equals the target directory
     throw process.exit(0)
   }
 } catch (e) { }
@@ -41,9 +41,9 @@ if (spawnSync('mv', [modulePath, directory], {stdio: 'inherit'}).status) {
   throw process.exit(1)
 }
 
-// Move link module folder to custom directory
-if (spawnSync('ln', ['-s', path.relative(dirname, directory), modulePath], {stdio: 'inherit'}).status) {
-  // Undo `mv`
+// Link module folder to custom directory
+if (spawnSync('ln', ['-s', path.relative(path.dirname(modulePath), directory), modulePath], {stdio: 'inherit'}).status) {
+  // Undo `mv` on error
   spawnSync('mv', [directory, modulePath])
 
   throw process.exit(1)
